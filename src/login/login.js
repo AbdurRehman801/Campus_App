@@ -1,12 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
+
+import { withRouter, Redirect } from "react-router";
+import app from "firebase";
+import { AuthContext } from "../Auth";
 import "./login.css";
 import LockIcon from "@material-ui/icons/Lock";
 import PersonIcon from "@material-ui/icons/Person";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import { Link } from "react-router-dom";
 import SignUp from "./Signup";
+import firebaseConfig from "../firebase";
+ function LogIn() {
+  const [email, setEmail] = useState("");
+  const [username, setUserName] = useState("");
+  const [password, setPassword] = useState("");
 
-function LogIn() {
+  const handleLogin = (history) => {
+    firebaseConfig.auth().signInWithEmailAndPassword(email,username,password);
+    history.push('/home')
+  }
+
+
   return (
     <div className="background_color">
       <div className="form">
@@ -23,43 +37,57 @@ function LogIn() {
             />
           </div>
         </div>
-        <div className="login_body">
-          <div className="Name">
-            <h3>
-              <PersonIcon style={{ textAlign:"center" }}/>
-              Login as
-            </h3>
-            <input placeholder="Student" className="input_1"></input>
+        <form >
+          <div className="login_body">
+            <div className="Name">
+              <h3 style={{ display: "flex" }}>
+                <div>
+                  <PersonIcon />
+                </div>
+                Login as
+              </h3>
+              <input placeholder="Student" className="input_1" name = 'email' value={email} onChange = {(e)=>setEmail(e.target.value)}></input>
+            </div>
+            <div className="Name">
+              <h3 style={{ display: "flex" }}>
+                <div>
+                  <PersonIcon />
+                </div>
+                UserName
+              </h3>
+              <input placeholder="UserName" name="username"  className="input_1" value={username} onChange = {(e)=>setUserName(e.target.value)}></input>
+            </div>
+            <div className="Name">
+              <h3 style={{ display: "flex" }}>
+                <div>
+                  <VisibilityIcon />
+                </div>
+                Password
+              </h3>
+              <input
+                placeholder="Password"
+                className="input_1"
+                type="password"
+                name = "password"
+                value = {password}
+                onChange = {(e)=>setPassword(e.target.value)}
+              ></input>
+            </div>
+            <div>
+              <button type="submit" className="button1">
+                <LockIcon />
+                Login
+              </button>
+            </div>
+            <p className="Signup_page">
+              {" "}
+              Don't have account <Link to="/Signup"> SignUp </Link>{" "}
+            </p>
           </div>
-          <div className="Name">
-            <h3>
-              <PersonIcon />
-              UserName
-            </h3>
-            <input placeholder="UserName" className="input_1"></input>
-          </div>
-          <div className="Name">
-            <h3>
-              <VisibilityIcon />
-              Password
-            </h3>
-            <input
-              placeholder="Password"
-              className="input_1"
-              type="password"
-            ></input>
-          </div>
-          <div>
-            <button className="button1">
-              <LockIcon />
-              Login
-            </button>
-          </div>
-          <p className="Signup_page"> Don't have account <Link to = "/Signup"> SignUp </Link> </p>
-        </div>
+        </form>
       </div>
     </div>
   );
 }
 
-export default LogIn;
+export default LogIn
