@@ -7,19 +7,28 @@ import "./login.css";
 import LockIcon from "@material-ui/icons/Lock";
 import PersonIcon from "@material-ui/icons/Person";
 import VisibilityIcon from "@material-ui/icons/Visibility";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import SignUp from "./Signup";
 import firebaseConfig from "../firebase";
- function LogIn() {
+import { auth } from "../firebase";
+function LogIn() {
+  const history = useHistory();
   const [email, setEmail] = useState("");
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleLogin = (history) => {
-    firebaseConfig.auth().signInWithEmailAndPassword(email,username,password);
-    history.push('/home')
-  }
-
+  const handleLogin = (e) => {
+    e.preventDefault();
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then((user) => {
+        history.push("/Dashboard");
+      })
+      .catch((err) => {
+        setErrorMessage(err.message);
+      });
+  };
 
   return (
     <div className="background_color">
@@ -37,7 +46,7 @@ import firebaseConfig from "../firebase";
             />
           </div>
         </div>
-        <form >
+        <form onSubmit={handleLogin}>
           <div className="login_body">
             <div className="Name">
               <h3 style={{ display: "flex" }}>
@@ -46,7 +55,13 @@ import firebaseConfig from "../firebase";
                 </div>
                 Login as
               </h3>
-              <input placeholder="Student" className="input_1" name = 'email' value={email} onChange = {(e)=>setEmail(e.target.value)}></input>
+              <input
+                placeholder="Student"
+                className="input_1"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              ></input>
             </div>
             <div className="Name">
               <h3 style={{ display: "flex" }}>
@@ -55,7 +70,13 @@ import firebaseConfig from "../firebase";
                 </div>
                 UserName
               </h3>
-              <input placeholder="UserName" name="username"  className="input_1" value={username} onChange = {(e)=>setUserName(e.target.value)}></input>
+              <input
+                placeholder="UserName"
+                name="username"
+                className="input_1"
+                value={username}
+                onChange={(e) => setUserName(e.target.value)}
+              ></input>
             </div>
             <div className="Name">
               <h3 style={{ display: "flex" }}>
@@ -68,9 +89,9 @@ import firebaseConfig from "../firebase";
                 placeholder="Password"
                 className="input_1"
                 type="password"
-                name = "password"
-                value = {password}
-                onChange = {(e)=>setPassword(e.target.value)}
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               ></input>
             </div>
             <div>
@@ -83,6 +104,7 @@ import firebaseConfig from "../firebase";
               {" "}
               Don't have account <Link to="/Signup"> SignUp </Link>{" "}
             </p>
+            <div>{errorMessage}</div>
           </div>
         </form>
       </div>
@@ -90,4 +112,4 @@ import firebaseConfig from "../firebase";
   );
 }
 
-export default LogIn
+export default LogIn;

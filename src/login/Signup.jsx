@@ -31,10 +31,10 @@ const SignUp = () => {
         userRegistration.password
       )
       .then((user) => {
-        history.push("./Dashboard.js");
+        history.push("/Dashboard");
       })
-      .catch(() => {
-        setUserMessage("email Already exist");
+      .catch((err) => {
+        setUserMessage(err.message);
       });
 
     }
@@ -90,6 +90,12 @@ const SignUp = () => {
                     onChange={handleInput}
                   ></input>
                 </div>
+                <div>
+                <input type="radio" name="job" value="Student" className="radio1"/>
+                <label>Student</label> 
+                </div>
+                <input type="radio" name="job" value="Company" className="radio2"/>
+                <label >Company</label> 
                 <div className="Name">
                   <h3 style={{ display: "flex" }}>
                     <div>
@@ -125,7 +131,7 @@ const SignUp = () => {
                 <div>
                   <button type="submit" className="button">
                     <CreateIcon />
-                    Login
+                    SignUp
                   </button>
                 </div>
               </div>
