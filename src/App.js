@@ -24,9 +24,8 @@ function App () {
       <Route exact path= '/' component={LogIn}/>
       <Route exact path= '/Signup' component = {SignUp}/>
       <Route exact path= '/Dashboard' component = {Dashboard}/>
-      <Route exact path= '/company/Company.js' component = {Company}/>
-      <Route exact path= '/src/student/Student.js' component = {Student}/>
-      
+      <Route exact path= '/company' component = {Company}/>
+      <Route exact path= '/student' component = {Student}/>
     </Switch>
     </AuthProvider>
     {/* <SignUp/>
