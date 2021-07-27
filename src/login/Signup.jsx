@@ -15,10 +15,10 @@ const SignUp = () => {
   const [userRegistration, setUserRegistration] = useState({
     email: "",
     username: "",
-    role: "",
     password: "",
     confirmPassword: "",
   });
+  const [role, setRole] = useState("")
   const [userMessage, setUserMessage] = useState("");
   const handleInput = (e) => {
     const name = e.target.name;
@@ -33,22 +33,30 @@ const SignUp = () => {
         userRegistration.email,
         userRegistration.password
       )
-      .then((user) => {
-        if (userRegistration.role === "Student") {
+      .then(() => {
+
+        history.push('/login')
+        if (role === "Student") {
           database
             .ref("/CRS")
-            .child("Student/" + user.uid)
+            .child("Student/" + auth.currentUser.uid)
             .set({
-              email: "@gmail.com",
-              username: "Yasir",
-              password: "",
-              confirmPassword: "123456",
-            });
+              email: userRegistration.email,
+              username: userRegistration.username,
+              role: role,
+            }).then(() => console.log("user added successfully")).catch((err) => console.log(err));
+        }
+        else {
+          database.ref("/CRS").child("Company/").set({
+            email: userRegistration.email,
+            username: userRegistration.username,
+            role: role,
+          }).then(() => console.log("user added successfully"))
+            .catch((err) => console.log(err));
         }
       })
-      .catch((err) => {
-        setUserMessage(err.message);
-      });
+      .catch(err => alert(err.message))
+
   };
   return (
     <div>
@@ -128,9 +136,9 @@ const SignUp = () => {
                 Company
               </label> */}
               <div>
-                <input type="radio" id="std" name="age" value="Student" className="radio1"/>
+                <input type="radio" id="std" name="age" value="Student" className="radio1" onClick={() => setRole('Student')} />
                 <label for="std">Student</label>
-                <input type="radio" id="comp" name="age" value="Company" className="radio2"/>
+                <input type="radio" id="comp" name="age" value="Company" className="radio2" onClick={() => setRole('Company')} />
                 <label for="comp">Company</label>
               </div>
 

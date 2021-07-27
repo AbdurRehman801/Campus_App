@@ -11,19 +11,27 @@ import { Link, useHistory } from "react-router-dom";
 import SignUp from "./Signup";
 import firebaseConfig from "../firebase";
 import { auth } from "../firebase";
+import { database } from "firebase/app";
 function LogIn() {
   const history = useHistory();
   const [email, setEmail] = useState("");
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [user, setUser] = useState("");
 
   const handleLogin = (e) => {
+    console.log("hello world")
     e.preventDefault();
     auth
       .signInWithEmailAndPassword(email, password)
-      .then((user) => {
-        history.push("/Dashboard");
+      .then(() => {
+        console.log("hello Start")
+        database.ref("/CRS" + auth.currentUser.uid)
+          .on("value", data => {
+            setUser(data.val())
+            console.log("successfully.....", data.val());
+          })
       })
       .catch((err) => {
         setErrorMessage(err.message);
