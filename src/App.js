@@ -21,7 +21,7 @@ function App() {
     <>
       <AuthProvider>
         <Switch>
-          <Route exact path='/login' component={LogIn} />
+          <Route exact path='/' component={LogIn} />
           <Route exact path='/Signup' component={SignUp} />
           <Route exact path='/Dashboard' component={Dashboard} />
           <Route exact path='/company' component={Company} />

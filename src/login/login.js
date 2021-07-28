@@ -11,7 +11,11 @@ import { Link, useHistory } from "react-router-dom";
 import SignUp from "./Signup";
 import firebaseConfig from "../firebase";
 import { auth } from "../firebase";
-import { database } from "firebase/app";
+// import { database } from "firebase/app";
+import firebase from "firebase"
+import Student from "../student/Student";
+import Company from "../company/Company";
+import Dashboard from "./Dashboard"
 function LogIn() {
   const history = useHistory();
   const [email, setEmail] = useState("");
@@ -25,15 +29,30 @@ function LogIn() {
     e.preventDefault();
     auth
       .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        console.log("hello Start")
-        database.ref("/CRS" + auth.currentUser.uid)
-          .on("value", data => {
-            setUser(data.val())
-            console.log("successfully.....", data.val());
+      .then((res) => {
+        console.log("hello Start", res, "uid is ", auth.currentUser.uid)
+        firebase
+          .database()
+          .ref('CRS/users/' + firebase.auth().currentUser.uid)
+          .once('value')
+          .then((snapshot) => {
+            console.log("snapshot", snapshot.val())
+            const users = snapshot.val();
+            if (users.role === "student") {
+              history.push("/Student")
+            }
+            else if (users.role === "company") {
+              history.push("/Company")
+            }
+            else if (users.role === "") {
+              history.push("/dashboard")
+            }
+          }).catch((err) => {
+            console.log("err====>", err)
           })
       })
       .catch((err) => {
+        console.log("err ", err)
         setErrorMessage(err.message);
       });
   };

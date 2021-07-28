@@ -35,25 +35,17 @@ const SignUp = () => {
       )
       .then(() => {
 
-        history.push('/login')
-        if (role === "Student") {
+        history.push('/')
           database
             .ref("/CRS")
-            .child("Student/" + auth.currentUser.uid)
+            .child("/users" +"/" + auth.currentUser.uid)
             .set({
               email: userRegistration.email,
               username: userRegistration.username,
               role: role,
             }).then(() => console.log("user added successfully")).catch((err) => console.log(err));
-        }
-        else {
-          database.ref("/CRS").child("Company/").set({
-            email: userRegistration.email,
-            username: userRegistration.username,
-            role: role,
-          }).then(() => console.log("user added successfully"))
-            .catch((err) => console.log(err));
-        }
+     
+  
       })
       .catch(err => alert(err.message))
 
