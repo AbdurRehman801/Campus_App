@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { withRouter, Redirect } from "react-router";
 import app from "firebase";
@@ -16,6 +16,10 @@ import firebase from "firebase"
 import Student from "../student/Student";
 import Company from "../company/Company";
 import Dashboard from "./Dashboard"
+import Loader from "../student/components/loader";
+
+
+
 function LogIn() {
   const history = useHistory();
   const [email, setEmail] = useState("");
@@ -23,10 +27,15 @@ function LogIn() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [user, setUser] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [])
 
   const handleLogin = (e) => {
-    console.log("hello world")
     e.preventDefault();
+    setLoading(true);
     auth
       .signInWithEmailAndPassword(email, password)
       .then((res) => {
@@ -38,22 +47,27 @@ function LogIn() {
           .then((snapshot) => {
             console.log("snapshot", snapshot.val())
             const users = snapshot.val();
-            if (users.role === "student") {
-              history.push("/Student")
+            console.log(users.role)
+            setLoading(false);
+            if (users.role === "Student") {
+              history.push("/student")
             }
-            else if (users.role === "company") {
-              history.push("/Company")
+            else if (users.role === "Company") {
+              history.push("/company")
             }
             else if (users.role === "") {
               history.push("/dashboard")
             }
           }).catch((err) => {
             console.log("err====>", err)
+            setLoading(false);
+
           })
       })
       .catch((err) => {
         console.log("err ", err)
         setErrorMessage(err.message);
+        setLoading(false);
       });
   };
 
@@ -124,7 +138,9 @@ function LogIn() {
             <div>
               <button type="submit" className="button1">
                 <LockIcon />
-                Login
+                {
+                  loading ? <Loader /> : "Login"
+                }
               </button>
             </div>
             <p className="Signup_page">
@@ -135,6 +151,8 @@ function LogIn() {
           </div>
         </form>
       </div>
+
+
     </div>
   );
 }

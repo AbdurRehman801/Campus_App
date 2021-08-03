@@ -1,0 +1,17 @@
+.Navbar {
+  background-color: #69c782;
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logout {
+  margin-left: 1200px;
+  margin-top: 10px;
+}
+.addjob {
+  margin-top: 10px;
+  display: inline;
+}
