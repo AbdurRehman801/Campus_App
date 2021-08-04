@@ -1,18 +1,20 @@
 import React from "react";
 import "./company.css"
-import Form from "./Form"
+import Forms from "./AddingForm"
+import { Link, useHistory } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 
 
 const Company = () => {
+    const history = useHistory();
     return (
         <div>
             <div className="Navbar">
-                <Button variant="outline-primary" className="logout"> Add Job</Button>
-                <Button variant="outline-primary" className="addjob"> Logout</Button>
+                <Button variant="outline-primary" className="logout" onClick={() => history.push('/AddingForm   ')}> Add Job</Button>
+                <Button variant="outline-primary" className="addjob" > Logout</Button>
             </div>
-        </div>
+        </div >
     );
 }
 export default Company

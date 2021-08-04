@@ -14,6 +14,7 @@ import fire from "./firebase";
 import Dashboard from './login/Dashboard';
 import Company from './company/Company'
 import Student from './student/Student'
+import Forms from './company/AddingForm';
 
 // Firebase.initializeApp(fire)
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route exact path='/Dashboard' component={Dashboard} />
           <Route exact path='/company' component={Company} />
           <Route exact path='/student' component={Student} />
+          <Route exact path='/AddingForm' component={Forms} />
         </Switch>
       </AuthProvider>
       {/* <SignUp/>
