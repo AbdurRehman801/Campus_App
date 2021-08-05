@@ -11,7 +11,7 @@ const Company = () => {
     return (
         <div>
             <div className="Navbar">
-                <Button variant="outline-primary" className="logout" onClick={() => history.push('/AddingForm   ')}> Add Job</Button>
+                <Button variant="outline-primary" className="logout" onClick={() => history.push('/AddingForm')}> Add Job</Button>
                 <Button variant="outline-primary" className="addjob" > Logout</Button>
             </div>
         </div >

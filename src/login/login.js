@@ -97,7 +97,7 @@ function LogIn() {
                 Login as
               </h3>
               <input
-                placeholder="Student"
+                placeholder="Email"
                 className="input_1"
                 name="email"
                 value={email}

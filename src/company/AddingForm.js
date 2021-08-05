@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import firebase from "firebase";
+import firebaseConfig, { database } from "../firebase";
+import { auth } from "../firebase";
 import { Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import { Button } from 'reactstrap';
 
@@ -15,13 +18,38 @@ const Forms = (props) => {
         jobType: "",
         description: "",
     })
+
     const inputEvent = (event) => {
-
+        const name = event.target.name;
+        const value = event.target.value;
+        console.log(name, 'name')
+        console.log(value, 'value')
+        setPostJob({
+            ...postJob,
+            [name]: value
+        })
     }
-    const onSubmit = (event) => {
+
+    const onSubmits = (event) => {
         event.preventDefault();
+        console.log(postJob)
+        database
+            .ref("/JOBSDATA")
+            .child("/CompanyData" + "/" + auth.currentUser.uid)
+            .push({
+                companyName: postJob.companyName,
+                email: postJob.email,
+                website: postJob.website,
+                vancancies: postJob.vancancies,
+                dateOfApply: postJob.dateOfApply,
+                experience: postJob.experience,
+                skills: postJob.skills,
+                jobType: postJob.jobType,
+                description: postJob.description,
+            }).then(() => console.log("user added successfully")).catch((err) => console.log(err));
 
     }
+
     return (
         <Form style={{
             width: "50%", marginLeft: "350px", border: "2px solid Black", paddingLeft: "2px",
@@ -38,7 +66,7 @@ const Forms = (props) => {
                     <Input
                         type="text"
                         name="companyName"
-                        id="companyname"
+                        value={postJob.companyName}
                         placeholder="Company Name"
                         onChange={inputEvent}
                     />
@@ -48,7 +76,7 @@ const Forms = (props) => {
                     <Input
                         type="email"
                         name="email"
-                        id="exampleEmail"
+                        value={postJob.email}
                         placeholder="Email"
                         onChange={inputEvent}
                     />
@@ -58,8 +86,8 @@ const Forms = (props) => {
                     <Label for="Website">Website</Label>
                     <Input
                         type="Website"
-                        name="Website"
-                        id="Website"
+                        name="website"
+                        value={postJob.website}
                         placeholder="Website"
                         onChange={inputEvent}
                     />
@@ -68,8 +96,8 @@ const Forms = (props) => {
                     <Label for="Number">Number of Vacancies</Label>
                     <Input
                         type="number"
-                        name="number"
-                        id="exampleNumber"
+                        name="vancancies"
+                        value={postJob.vancancies}
                         placeholder="number of Vacacies"
                         onChange={inputEvent}
                     />
@@ -78,8 +106,8 @@ const Forms = (props) => {
                     <Label for="exampleDate">Last Date of Apply</Label>
                     <Input
                         type="date"
-                        name="date"
-                        id="exampleDate"
+                        name="dateOfApply"
+                        value={postJob.dateOfApply}
                         placeholder="date placeholder"
                         onChange={inputEvent}
                     />
@@ -88,8 +116,8 @@ const Forms = (props) => {
                     <Label for="Experience">Experience</Label>
                     <Input
                         type="text"
-                        name="Experience"
-                        id="Experience"
+                        name="experience"
+                        value={postJob.experience}
                         placeholder="Experience"
                         onChange={inputEvent}
                     />
@@ -98,15 +126,15 @@ const Forms = (props) => {
                     <Label for="Skills">Skills</Label>
                     <Input
                         type="text"
-                        name="Skills"
-                        id="Skills"
+                        name="skills"
+                        value={postJob.skills}
                         placeholder="Skills"
                         onChange={inputEvent}
                     />
                 </FormGroup>
                 <FormGroup>
                     <Label for="Job Type">Job Type</Label>
-                    <Input type="select" name="select" id="exampleSelect" onChange={inputEvent}>
+                    <Input type="select" name="jobType" value={postJob.jobType} onChange={inputEvent}>
                         <option>Part Time</option>
                         <option>Full Time</option>
 
@@ -114,7 +142,7 @@ const Forms = (props) => {
                 </FormGroup>
                 <FormGroup>
                     <Label for="Description">Description</Label>
-                    <Input type="textarea" name="Description" id="Description" onChange={inputEvent} />
+                    <Input type="textarea" name="description" value={postJob.description} onChange={inputEvent} />
                 </FormGroup>
                 <Button color="primary" size="lg" block type="submit" >Submit</Button>
             </fieldset >
