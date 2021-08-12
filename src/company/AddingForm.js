@@ -5,6 +5,7 @@ import firebaseConfig, { database } from "../firebase";
 import { auth } from "../firebase";
 import { Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import { Button } from 'reactstrap';
+import Cards from './Card';
 
 const Forms = (props) => {
     const [postJob, setPostJob] = useState({
@@ -30,10 +31,10 @@ const Forms = (props) => {
         })
     }
 
-    const onSubmits = (event) => {
+    const onSubmits = async (event) => {
         event.preventDefault();
         console.log(postJob)
-        database
+        await database
             .ref("/JOBSDATA")
             .child("/CompanyData" + "/" + auth.currentUser.uid)
             .push({
@@ -47,6 +48,25 @@ const Forms = (props) => {
                 jobType: postJob.jobType,
                 description: postJob.description,
             }).then(() => console.log("user added successfully")).catch((err) => console.log(err));
+
+        var starCountRef = database.ref('/JOBSDATA/CompanyData/' + auth.currentUser.uid);
+        await starCountRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+
+            Object.values(data)?.map((value, index) => {
+                console.log("data===>", data)
+                {
+                    // Object.keys(data[value]).map((prod) => {
+                    //     console.log(data[value][prod])
+                    // })
+                }
+
+
+            })
+
+        });
+
+
 
     }
 
