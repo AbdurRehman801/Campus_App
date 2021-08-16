@@ -15,6 +15,7 @@ import Dashboard from './login/Dashboard';
 import Company from './company/Company'
 import Student from './student/Student'
 import Forms from './company/AddingForm';
+import Update from './company/Updateform';
 
 // Firebase.initializeApp(fire)
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route exact path='/company' component={Company} />
           <Route exact path='/student' component={Student} />
           <Route exact path='/AddingForm' component={Forms} />
+          <Route exact path='/UpdateForm' component={Update} />
         </Switch>
       </AuthProvider>
       {/* <SignUp/>
