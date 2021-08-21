@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import firebase from "firebase";
 import firebaseConfig, { database } from "../firebase";
+import { useSelector, useDispatch } from 'react-redux';
+import { adding } from '../redux/actions/index';
 import { auth } from "../firebase";
 import { Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import { Button } from 'reactstrap';
 import Cards from './Card';
+import formsData from '../redux/reducers/formdata';
 
 const Forms = (props) => {
     const [postJob, setPostJob] = useState({
@@ -18,22 +21,26 @@ const Forms = (props) => {
         skills: "",
         jobType: "",
         description: "",
-    })
+    });
+    
+
+   
+    const dispatch = useDispatch();
 
     const inputEvent = (event) => {
         const name = event.target.name;
         const value = event.target.value;
-        console.log(name, 'name')
-        console.log(value, 'value')
+        console.log(name, 'name');
+        console.log(value, 'value');
         setPostJob({
             ...postJob,
             [name]: value
-        })
-    }
+        });
+    };
 
     const onSubmits = async (event) => {
         event.preventDefault();
-        console.log(postJob)
+        console.log(postJob);
         await database
             .ref("/JOBSDATA")
             .child("/CompanyData" + "/" + auth.currentUser.uid)
@@ -52,23 +59,23 @@ const Forms = (props) => {
         var starCountRef = database.ref('/JOBSDATA/CompanyData/' + auth.currentUser.uid);
         await starCountRef.on('value', (snapshot) => {
             const data = snapshot.val();
-
+            console.log("data===>", data);
+            
             Object.values(data)?.map((value, index) => {
-                console.log("data===>", data)
                 {
-                    // Object.keys(data[value]).map((prod) => {
-                    //     console.log(data[value][prod])
-                    // })
+            //         Object.keys(data[value]).map((prod) => {
+            //             console.log(data[value][prod])
+            //         })
                 }
 
 
-            })
-
+            });
+    
         });
 
 
 
-    }
+    };
 
     return (
         <Form style={{
@@ -168,6 +175,6 @@ const Forms = (props) => {
             </fieldset >
         </Form >
     );
-}
+};
 
 export default Forms;
