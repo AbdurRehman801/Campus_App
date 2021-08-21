@@ -13,14 +13,14 @@ const userSlice = createSlice({
       state.userName = action.payload.userName;
       state.userEmail = action.payload.userEmail;
     },
-    serUserLogOutState: (state) => {
+    setUserLogOutState: (state) => {
       state.userName = null;
       state.userEmail = null;
     },
   },
 });
 
-export const { setActiveUser, serUserLogOutState } = userSlice.actions;
+export const { setActiveUser, setUserLogOutState } = userSlice.actions;
 
 export const selectUserName = state => state.user.userName
 export const selectUserEmail = state => state.user.userEmail

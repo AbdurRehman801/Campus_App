@@ -17,7 +17,6 @@ import Student from './student/Student'
 import Forms from './company/AddingForm';
 import Update from './company/Updateform';
 
-// Firebase.initializeApp(fire)
 function App() {
   return (
     <>
