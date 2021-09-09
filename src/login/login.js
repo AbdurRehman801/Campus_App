@@ -17,11 +17,15 @@ import Student from "../student/Student";
 import Company from "../company/Company";
 import Dashboard from "./Dashboard"
 import Loader from "../student/components/loader";
+import { isLoggedIn } from "../redux/actions";
+import Status from "../redux/reducers/loginStatus";
+import { useSelector, useDispatch } from 'react-redux';
 
 
 
 function LogIn() {
   const history = useHistory();
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -47,7 +51,7 @@ function LogIn() {
           .then((snapshot) => {
             console.log("snapshot", snapshot.val())
             const users = snapshot.val();
-            console.log(users.role)
+            // console.log(users.role)
             setLoading(false);
             if (users.role === "Student") {
               history.push("/student")
@@ -58,6 +62,9 @@ function LogIn() {
             else if (users.role === "") {
               history.push("/dashboard")
             }
+            dispatch(isLoggedIn({user:users})) 
+            console.log("users===>",users)
+                 
           }).catch((err) => {
             console.log("err====>", err)
             setLoading(false);
@@ -70,6 +77,8 @@ function LogIn() {
         setLoading(false);
       });
   };
+
+
 
   return (
     <div className="background_color">

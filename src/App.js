@@ -16,8 +16,12 @@ import Company from './company/Company'
 import Student from './student/Student'
 import Forms from './company/AddingForm';
 import Update from './company/Updateform';
-
+import AddProfile from './student/addProfile';
+import Profile from './student/profile';
+import Vacancies from './student/vacancies';
 function App() {
+  const state = useSelector(state => state.status)
+  console.log(state)
   return (
     <>
       <AuthProvider>
@@ -29,6 +33,10 @@ function App() {
           <Route exact path='/student' component={Student} />
           <Route exact path='/AddingForm' component={Forms} />
           <Route exact path='/UpdateForm' component={Update} />
+          <Route path='/addProfile' component={AddProfile}/>
+          <Route path='/profile' component={Profile}/>
+          <Route path='/vacancies' component={Vacancies}/>
+          
         </Switch>
       </AuthProvider>
     </>

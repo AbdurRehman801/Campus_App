@@ -4,8 +4,6 @@ import { auth } from "../firebase";
 import firebaseConfig, { database } from "../firebase";
 import { useSelector, useDispatch } from 'react-redux';
 import { adding } from '../redux/actions/index';
-import formsData from '../redux/reducers/formdata';
-import Modal from 'react-modal';
 import Updateform from "./Updateform";
 import { Card, CardBody, CardSubtitle, CardTitle, CardText, CardLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
@@ -23,6 +21,7 @@ const Cards = (props) => {
         jobType: "",
         description: "",
     }.props;
+    const [userKey , setUserKey] = useState("")
     const dispatch = useDispatch();
     const [array, setArray] = useState([]);
     const [uid, setUid] = useState("");
@@ -30,6 +29,7 @@ const Cards = (props) => {
 
     useEffect(async () => {
         await auth.onAuthStateChanged((user) => {
+            console.log("user==>", user)
             setUid(user.uid);
         });
     }, []);
@@ -38,23 +38,27 @@ const Cards = (props) => {
         console.log(uid, 'uid');
         if (uid) {
             var starCountRef = database.ref('/JOBSDATA/CompanyData/' + uid + "/");
-            starCountRef.once('value', (snapshot) => {
+            starCountRef.on('value', (snapshot) => {
                 const data = snapshot.val();
+                console.log("data=====>",data)
                 setArray(data ? data : []);
                 data && Object.values(data).map((value1, index1) => {
                     value1["pushKey"] = Object.keys(data)[index1];
+                    
                     arr.push(value1);
+                    setUserKey(value1.pushKey)
+                    
+                    
                 });
             });
         }
     }, [uid]);
+    console.log(userKey)
     let temp = "abc"
     useEffect(() => {
-  
-dispatch(adding(array))        
-        // dispatch(
-        //     formsData({user:temp})
-        // )
+        console.log(array, 'array')
+            dispatch(adding(array))        
+    
     }, [array]);
     
 
@@ -76,7 +80,8 @@ dispatch(adding(array))
                                 <CardText>Vacancies: {value3.vancancies}</CardText>
                                 <CardText>Website: {value3.website}</CardText>
                                 <CardText>Description: {value3.description}</CardText>
-                                <Updateform data={value3} />
+                                {console.log("userkey",userKey)}
+                                <Updateform data={value3} userKey={userKey} />
                             </CardBody>;
                         </div>
                     );

@@ -12,6 +12,7 @@ import formsData from '../redux/reducers/formdata';
 
 const Forms = (props) => {
     const [postJob, setPostJob] = useState({
+        id: '',
         companyName: "",
         email: "",
         website: "",
@@ -45,6 +46,7 @@ const Forms = (props) => {
             .ref("/JOBSDATA")
             .child("/CompanyData" + "/" + auth.currentUser.uid)
             .push({
+                id: auth.currentUser.uid + "/",
                 companyName: postJob.companyName,
                 email: postJob.email,
                 website: postJob.website,
@@ -61,15 +63,15 @@ const Forms = (props) => {
             const data = snapshot.val();
             console.log("data===>", data);
             
-            Object.values(data)?.map((value, index) => {
-                {
-            //         Object.keys(data[value]).map((prod) => {
-            //             console.log(data[value][prod])
-            //         })
-                }
+            // Object.values(data)?.map((value, index) => {
+            //     {
+            // //         Object.keys(data[value]).map((prod) => {
+            // //             console.log(data[value][prod])
+            // //         })
+            //     }
 
 
-            });
+            // });
     
         });
 
