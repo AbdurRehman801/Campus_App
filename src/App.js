@@ -31,8 +31,6 @@ function App() {
           <Route exact path='/UpdateForm' component={Update} />
         </Switch>
       </AuthProvider>
-      {/* <SignUp/>
-    <LogIn/> */}
     </>
 
   );
